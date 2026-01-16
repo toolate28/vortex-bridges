@@ -1,0 +1,37 @@
+{
+  "name": "@spiralsafe/vortex-bridges",
+  "version": "1.0.0",
+  "description": "Bridge implementations for SpiralSafe vortex collapse",
+  "type": "module",
+  "exports": {
+    "./hope-npc": "./hope-npc-bridge/atom-npc-tracker.ts",
+    "./kenl-infra": "./kenl-bridge/runpod-coherence-gate.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "bun test"
+  },
+  "dependencies": {
+    "@spiralsafe/wave-toolkit": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.0",
+    "@types/node": "^20.0.0"
+  },
+  "peerDependencies": {
+    "bun": ">=1.0.0"
+  },
+  "keywords": [
+    "spiralsafe",
+    "vortex",
+    "coherence",
+    "atom-trail",
+    "h&s:wave"
+  ],
+  "author": "H&&S:WAVE",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/toolate28/spiralsafe-mono"
+  }
+}
