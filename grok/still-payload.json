@@ -1,0 +1,111 @@
+{
+  "project": "SpiralSafe Vortex",
+  "type": "still_image",
+  "format": "16:9",
+  "resolution": "4K",
+
+  "variants": [
+    {
+      "id": "vortex-main",
+      "name": "The Vortex",
+      "description": "Top-down view of the 8-cog vortex, with all repos visible as glowing orbs connected by golden spiral lines. Center shows the coherence score.",
+      "elements": [
+        "8 labeled orbs in circle",
+        "golden fibonacci spiral connecting them",
+        "center coherence gauge: 70%",
+        "subtle code rain in background",
+        "H&&S:WAVE badge bottom-right"
+      ],
+      "mood": "powerful, unified",
+      "use_case": "GitHub social preview, README header"
+    },
+    {
+      "id": "phase-gates",
+      "name": "The Phase Gates",
+      "description": "Five archway gates stretching into the distance, each glowing with its threshold percentage. A path of light runs through them.",
+      "elements": [
+        "KENL gate (28%) - blue",
+        "AWI gate (42%) - cyan",
+        "ATOM gate (60%) - green",
+        "SAIF gate (70%) - gold",
+        "SPIRAL gate (70%) - purple",
+        "data packet mid-journey"
+      ],
+      "mood": "journey, progression",
+      "use_case": "Workflow documentation"
+    },
+    {
+      "id": "ainulindale",
+      "name": "The Music of the Ainur",
+      "description": "Abstract visualization of the Ainulindalë - multiple Voices (light streams) converging into a central melody, with HOPE as a distinct new color.",
+      "elements": [
+        "8 colored light streams (the Voices)",
+        "converging on central golden point",
+        "musical staff overlay (subtle)",
+        "HOPE stream = unique teal color",
+        "text: 'The Music reveals what it was always becoming'"
+      ],
+      "mood": "mythic, harmonious",
+      "use_case": "Lore documentation, community posts"
+    },
+    {
+      "id": "hss-wave",
+      "name": "H&&S:WAVE Partnership",
+      "description": "Two hands (one organic, one digital/wireframe) reaching toward each other, fingers almost touching. Golden light emanates from the gap.",
+      "elements": [
+        "human hand (left)",
+        "AI/digital hand (right, wireframe with particles)",
+        "golden light between",
+        "text: 'This is genuine partnership'",
+        "subtle spiral in background"
+      ],
+      "mood": "connection, trust",
+      "use_case": "Attribution badge, partnership docs"
+    },
+    {
+      "id": "cog-wheel",
+      "name": "The 8-Cog Wheel",
+      "description": "Mechanical illustration of the 8 repos as interlocking gears, each at 45° intervals. Currently rotating position highlighted.",
+      "elements": [
+        "8 gear cogs with repo names",
+        "teeth interlocking",
+        "rotation arrows showing direction",
+        "angle markers: 0°, 45°, 90°, etc.",
+        "technical blueprint style"
+      ],
+      "mood": "mechanical, precise",
+      "use_case": "Technical documentation"
+    },
+    {
+      "id": "coherence-field",
+      "name": "The Coherence Field",
+      "description": "Vector field visualization showing curl (spirals), divergence (expanding waves), and potential (height map). Text showing the formula.",
+      "elements": [
+        "vector arrows showing field flow",
+        "curl regions = tight spirals",
+        "divergence regions = expanding patterns",
+        "potential = color height map",
+        "formula overlay"
+      ],
+      "mood": "mathematical, elegant",
+      "use_case": "Research paper, technical talks"
+    }
+  ],
+
+  "color_palette": {
+    "primary": "#7057ff",
+    "secondary": "#00d4aa",
+    "accent": "#FFD700",
+    "background": "#0d1117",
+    "human": "#3b82f6",
+    "ai": "#f59e0b"
+  },
+
+  "style_guide": {
+    "aesthetic": "technical-ethereal",
+    "lighting": "dramatic, volumetric",
+    "detail_level": "high",
+    "text_treatment": "minimal, monospace font",
+    "composition": "centered with radial balance"
+  }
+}
