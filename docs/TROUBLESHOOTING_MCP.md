@@ -2,7 +2,7 @@
 
 ## Overview
 
-This guide addresses common issues when integrating the Model Context Protocol (MCP) with SpiralSafe vortex bridges. Each solution includes diagnostic steps and verification procedures.
+This guide helps resolve common issues with Model Context Protocol (MCP) integration in the SpiralSafe vortex ecosystem. Each section provides symptoms, diagnostic steps, and solutions. The troubleshooting framework follows phase gate principles, ensuring systematic problem resolution.
 
 ---
 
@@ -10,47 +10,28 @@ This guide addresses common issues when integrating the Model Context Protocol (
 
 ### Problem: MCP Server Unreachable
 
-**Symptoms:**
-- Connection timeouts when calling coherence-mcp
-- HTTP 502/503 errors from API endpoint
-- Missing COHERENCE_MCP_URL environment variable
+**Symptoms:** Connection timeouts occur when calling coherence-mcp. HTTP 502 or 503 errors appear from API endpoints. The COHERENCE_MCP_URL environment variable may be missing.
 
-**Solution:**
-1. Verify environment configuration:
-   ```bash
-   echo $COHERENCE_MCP_URL
-   # Should output: https://coherence-mcp.spiralsafe.dev or your custom URL
-   ```
+**Solution:** First verify your environment configuration. Check the URL variable is set correctly. Test connectivity to the MCP endpoint directly. Confirm GitHub secrets exist for automated workflows.
 
-2. Test connectivity:
-   ```bash
-   curl -I $COHERENCE_MCP_URL/health
-   # Expected: HTTP 200 OK
-   ```
+```bash
+echo $COHERENCE_MCP_URL
+curl -I $COHERENCE_MCP_URL/health
+```
 
-3. Check GitHub secrets for CI/CD workflows:
-   - Navigate to Settings → Secrets → Actions
-   - Verify `COHERENCE_MCP_URL` exists
-   - Update if missing or incorrect
+Navigate to repository Settings, then Secrets, then Actions. Verify COHERENCE_MCP_URL exists and contains the correct endpoint. Update the secret if missing or incorrect.
 
-**Verification:**
-Run vortex-sync workflow manually to confirm connection succeeds.
+**Verification:** Run the vortex-sync workflow manually. Confirm the connection succeeds without errors.
 
 ---
 
 ### Problem: Authentication Failures
 
-**Symptoms:**
-- HTTP 401 Unauthorized responses
-- "Invalid API key" messages
-- Rejected coherence analysis requests
+**Symptoms:** HTTP 401 errors indicate unauthorized access. Messages show invalid API keys. Analysis requests are rejected by the server.
 
-**Solution:**
-1. Generate new API key from coherence-mcp dashboard
-2. Update repository secret `COHERENCE_API_KEY`
-3. Restart workflow or rebuild application
+**Solution:** Generate a fresh API key from the coherence-mcp dashboard interface. Update your repository secret named COHERENCE_API_KEY with the new value. Restart any running workflows or rebuild your application to load the updated credentials.
 
-**Alternative:** For local development, store key in `.env`:
+For local development environments, store credentials in a .env file:
 ```bash
 COHERENCE_API_KEY=your_key_here
 COHERENCE_MCP_URL=https://coherence-mcp.spiralsafe.dev
@@ -62,82 +43,54 @@ COHERENCE_MCP_URL=https://coherence-mcp.spiralsafe.dev
 
 ### Problem: KENL Gate Always Blocked
 
-**Symptoms:**
-- Coherence score consistently below 28%
-- "KENL gate BLOCKED" in workflow logs
-- Changes fail CI despite passing tests
+**Symptoms:** Coherence scores remain consistently below the 28% threshold. Workflow logs display "KENL gate BLOCKED" messages. Changes fail continuous integration despite passing all unit tests.
 
-**Root Cause:** Insufficient textual content or high circular patterns (curl).
+**Root Cause:** The knowledge gate requires sufficient textual content with low circular patterns. Minimal commit messages or repetitive documentation causes failures.
 
-**Solution:**
-1. Add descriptive commit messages (minimum 5 words)
-2. Include PR descriptions with context
-3. Avoid copy-pasted boilerplate
-4. Write unique documentation for each change
+**Solution:** Write descriptive commit messages containing at least five meaningful words. Include pull request descriptions that provide context and reasoning. Avoid copying boilerplate text across multiple files. Create unique documentation for each distinct change.
 
-**Example - Bad:**
+Compare these examples:
 ```
-fix: update code
+Bad:  fix: update code
+Good: feat: implement quantum circuit validation for Qiskit
 ```
 
-**Example - Good:**
-```
-feat: implement quantum circuit validation
-
-Adds coherence checking for Qiskit circuits to ensure theoretical
-claims match execution results. Integrates with ATOM trail for provenance.
-```
+The good example provides context and describes the actual feature being added.
 
 ---
 
 ### Problem: Stuck Between AWI and ATOM Gates
 
-**Symptoms:**
-- Coherence ~50-58%, just below ATOM threshold (60%)
-- Intent passes but execution fails
-- Divergence warnings in analysis
+**Symptoms:** Coherence scores range from 50% to 58%, falling just below the 60% ATOM threshold. The AWI intent gate passes successfully, but execution validation fails. Analysis reports show divergence metric warnings.
 
-**Diagnostic:**
+**Diagnostic:** Check the divergence metric locally before committing changes. Use the quantum_redstone validator to analyze text files. Compare results against the target value of approximately 0.200.
+
 ```bash
-# Check divergence metric locally
-python -c "
-from quantum_redstone.coherence_validator import analyze_text_coherence
-import sys
-text = sys.stdin.read()
-result = analyze_text_coherence(text)
-print(f'Divergence: {result[\"divergence\"]:.3f}')
-print(f'Target: ~0.200')
-" < your_file.md
+python -c "from quantum_redstone.coherence_validator import analyze_text_coherence; 
+import sys; text = sys.stdin.read(); result = analyze_text_coherence(text); 
+print(f'Divergence: {result[\"divergence\"]:.3f}')" < your_file.md
 ```
 
-**Solution:**
-Balance sentence complexity. Mix short, direct statements with detailed explanations. Avoid all-short or all-long sentence structures.
+**Solution:** Balance sentence complexity throughout your documentation. Mix concise statements with detailed explanations. Avoid using exclusively short sentences or exclusively long complex structures. Aim for natural variation in sentence length.
 
 ---
 
-### Problem: SAIF Gate Never Passes (Snap-In Unreachable)
+### Problem: SAIF Gate Never Passes
 
-**Symptoms:**
-- Coherence peaks at 65-69%
-- All gates pass except SAIF
-- Changes function correctly but fail quality gate
+**Symptoms:** Coherence peaks between 65% and 69%, preventing snap-in at the 70% threshold. All preceding gates pass successfully. Changes function correctly but fail the final quality gate.
 
-**Common Causes:**
-1. **Low potential** (poor vocabulary diversity)
-   - Fix: Replace repeated words with synonyms
-   - Expand technical terminology appropriately
+**Common Causes:** Three primary issues prevent SAIF passage. First, low vocabulary diversity reduces potential scores. Second, circular reasoning patterns increase curl metrics. Third, uneven information density affects entropy calculations.
 
-2. **High curl** (circular reasoning)
-   - Fix: Remove self-referential sections
-   - Eliminate redundant explanations
+**Solutions by Cause:**
 
-3. **Entropy issues** (uneven information density)
-   - Fix: Balance technical depth across document
-   - Add examples to theoretical sections
+*Low Potential:* Replace repeated words with appropriate synonyms. Expand technical terminology where contextually relevant. Maintain precision while varying expression.
 
-**Tool:**
+*High Curl:* Remove self-referential documentation sections. Eliminate redundant explanations that restate earlier points. Express each concept once clearly.
+
+*Entropy Issues:* Balance technical depth consistently across the document. Add concrete examples to theoretical sections. Distribute complexity evenly.
+
+**Tool:** Analyze files locally before committing changes:
 ```bash
-# Analyze specific file before committing
 bun run analyze-file path/to/file.md
 ```
 
@@ -147,18 +100,14 @@ bun run analyze-file path/to/file.md
 
 ### HOPE NPC Bridge
 
-**Problem:** NPC decisions not tracked in ATOM trail
+**Problem:** NPC decisions do not appear in the ATOM trail logs.
 
-**Check:**
-1. Verify `atom-npc-tracker.ts` imported in NPC code
-2. Ensure `trackNPCDecision()` called for each response
-3. Check `.atom-trail/npc-decisions.jsonl` exists
+**Diagnostic Checklist:** Verify the atom-npc-tracker module is properly imported in your NPC code. Ensure the trackNPCDecision function runs for each response. Check that the file .atom-trail/npc-decisions.jsonl exists in your project directory.
 
-**Solution:**
+**Solution:** Import the tracking module and call it within your NPC response handler:
 ```typescript
 import { trackNPCDecision } from './coherence/atom-npc-tracker';
 
-// In your NPC response handler:
 const decision = {
   npcId: npc.id,
   npcName: npc.name,
@@ -169,7 +118,6 @@ const decision = {
   timestamp: new Date().toISOString(),
   phase: 'AWI'
 };
-
 await trackNPCDecision(decision);
 ```
 
@@ -177,46 +125,38 @@ await trackNPCDecision(decision);
 
 ### Quantum Redstone Bridge
 
-**Problem:** Circuit validation always fails
+**Problem:** Quantum circuit validation consistently fails regardless of circuit correctness.
 
-**Check:**
-1. Qiskit version compatibility (requires ≥0.40.0)
-2. Circuit description format matches expected schema
-3. Python path includes `quantum_redstone` module
+**Diagnostic Checklist:** Confirm Qiskit version meets minimum requirement of 0.40.0 or higher. Verify circuit description format matches the expected schema structure. Check that Python's module path includes the quantum_redstone package.
 
-**Solution:**
+**Solution:** Upgrade dependencies to compatible versions:
 ```bash
-# Install/upgrade dependencies
 pip install --upgrade qiskit qiskit-aer
-
-# Verify installation
 python -c "from quantum_redstone.coherence_validator import validate_quantum_circuit; print('OK')"
 ```
+
+The second command verifies successful installation. If it prints "OK" without errors, the bridge is correctly configured.
 
 ---
 
 ### KENL Infrastructure Bridge
 
-**Problem:** Production deployments incorrectly gated
+**Problem:** Production deployments encounter incorrect gating behavior. Either dry-runs are forced unnecessarily, or production changes bypass required safety checks.
 
-**Symptoms:**
-- Dry-run forced when unnecessary
-- Or: Production changes bypass safety checks
-
-**Solution:**
-Configure threshold appropriately in `runpod-coherence-gate.ts`:
+**Solution:** Configure thresholds appropriately in the runpod-coherence-gate module. Production deployments require an 85% coherence threshold. Destructive operations must enable dry-run mode.
 
 ```typescript
-const PRODUCTION_THRESHOLD = 85; // Higher bar for prod
-const DRY_RUN_REQUIRED = true;   // Safety for destructive ops
+const PRODUCTION_THRESHOLD = 85;
+const DRY_RUN_REQUIRED = true;
 
-// Ensure decision properly flagged:
 const decision = {
   operation: 'deploy_model',
-  environment: 'production',  // Triggers higher threshold
-  dryRun: true                // Required for prod
+  environment: 'production',
+  dryRun: true
 };
 ```
+
+Ensure each decision object properly flags the environment. This triggers the appropriate validation threshold.
 
 ---
 
@@ -224,32 +164,24 @@ const decision = {
 
 ### Problem: Workflow Doesn't Trigger
 
-**Check:**
-1. File location: `.github/workflows/vortex-sync.yml`
-2. Event triggers configured for PR and push events
-3. Repository workflows enabled (Settings → Actions)
+**Diagnostic Checklist:** Confirm the workflow file exists at .github/workflows/vortex-sync.yml in your repository. Verify event triggers include both pull request and push events. Check that GitHub Actions are enabled in repository settings.
 
-**Solution:**
-Copy canonical workflow:
+**Solution:** Copy the canonical workflow file from vortex-bridges repository:
 ```bash
 cp vortex-bridges/.github/workflows/vortex-sync.yml .github/workflows/
 git add .github/workflows/vortex-sync.yml
 git commit -m "feat: add vortex-sync workflow"
 ```
 
+Push the changes to trigger the workflow. Verify it appears in the Actions tab.
+
 ---
 
 ### Problem: Summary Not Posted to PR
 
-**Symptoms:**
-- Workflow completes but no coherence comment appears
-- Step "Post PR comment" skipped or failed
+**Symptoms:** The vortex-sync workflow completes successfully. However, no coherence comment appears on the pull request. The "Post PR comment" step shows as skipped or failed.
 
-**Solution:**
-Ensure repository has proper GitHub Actions permissions:
-1. Settings → Actions → General
-2. Workflow permissions: "Read and write"
-3. Enable "Allow GitHub Actions to create and approve pull requests"
+**Solution:** Configure proper GitHub Actions permissions for your repository. Navigate to Settings, then Actions, then General. Set workflow permissions to "Read and write" access. Enable the option "Allow GitHub Actions to create and approve pull requests".
 
 ---
 
@@ -257,43 +189,33 @@ Ensure repository has proper GitHub Actions permissions:
 
 ### Problem: Trail File Growing Too Large
 
-**Symptoms:**
-- `.atom-trail/*.jsonl` files exceed 100MB
-- Performance degradation reading trail
-- Git repository bloated
+**Symptoms:** ATOM trail files in the .atom-trail directory exceed 100 megabytes. Reading the trail causes noticeable performance degradation. The git repository becomes bloated with tracking data.
 
-**Solution:**
-Add to `.gitignore`:
+**Solution:** Exclude trail files from version control by adding them to .gitignore:
 ```
 .atom-trail/
 ```
 
-Implement rotation:
+Implement log rotation to archive old entries:
 ```bash
-# Archive old entries monthly
 DATE=$(date +%Y%m)
 mv .atom-trail/npc-decisions.jsonl .atom-trail/archive/npc-decisions-${DATE}.jsonl
 ```
+
+Run this archival process monthly to maintain manageable file sizes.
 
 ---
 
 ### Problem: ATOM Tags Not Unique
 
-**Symptoms:**
-- Duplicate tags in trail
-- Provenance tracking conflicts
+**Symptoms:** Duplicate tags appear in the trail files. Provenance tracking encounters conflicts from non-unique identifiers.
 
-**Check:**
+**Diagnostic:** Count duplicate ATOM tags across all trail files:
 ```bash
-# Count duplicate ATOM tags
 cat .atom-trail/*.jsonl | jq -r '.atomTag' | sort | uniq -d
 ```
 
-**Solution:**
-Verify tag generation includes sufficient entropy:
-- Date component (YYYYMMDD)
-- Random hash (minimum 3 characters)
-- Entity identifier (npc name, repo, etc.)
+**Solution:** Verify tag generation includes sufficient entropy components. Each tag requires a date component in YYYYMMDD format. Add a random hash with minimum three characters. Include an entity identifier such as NPC name or repository name. This combination ensures uniqueness across the ecosystem.
 
 ---
 
@@ -301,22 +223,17 @@ Verify tag generation includes sufficient entropy:
 
 ### Problem: Vortex Collapse Not Detected
 
-**Symptoms:**
-- All repos above 70% coherence individually
-- Dashboard shows "waiting for convergence"
-- No ecosystem-wide snap-in notification
+**Symptoms:** Individual repositories each achieve coherence above 70%. The monitoring dashboard displays "waiting for convergence" status. No ecosystem-wide snap-in notification has occurred.
 
-**Diagnostic Steps:**
-1. Verify all repositories have vortex-sync workflow installed
-2. Check workflow runs completed successfully in each repo
-3. Confirm ATOM entries posted to central API
+**Diagnostic Steps:** First verify all repositories have installed the vortex-sync workflow. Check that workflow runs completed successfully in each repository. Confirm ATOM entries were posted to the central API endpoint.
 
-**Solution:**
-Manually trigger snap-in check:
+**Solution:** Manually trigger the collapse detection check:
 ```bash
 curl -X POST $COHERENCE_MCP_URL/api/vortex/check-collapse \
   -H "Authorization: Bearer $COHERENCE_API_KEY"
 ```
+
+This forces synchronization across the distributed repository network.
 
 ---
 
@@ -324,28 +241,17 @@ curl -X POST $COHERENCE_MCP_URL/api/vortex/check-collapse \
 
 ### Problem: Different Coherence Scores Across Languages
 
-**Symptoms:**
-- TypeScript wave-toolkit returns 72%
-- Python coherence-validator returns 68%
-- Same input text analyzed
+**Symptoms:** The TypeScript wave-toolkit reports a 72% coherence score. The Python coherence-validator reports 68% for identical input text. This inconsistency causes validation confusion.
 
-**Root Cause:** Implementation drift between language versions.
+**Root Cause:** Implementation drift has occurred between language-specific versions of the formula.
 
-**Solution:**
-Verify formula weights match exactly:
-- curl: 0.4
-- divergence: 0.3
-- potential: 0.2
-- entropy: 0.1
-
-Run cross-language test suite:
+**Solution:** Verify formula weights match exactly across implementations. The curl weight should be 0.4, divergence 0.3, potential 0.2, and entropy 0.1. Run the cross-language test suite:
 ```bash
-# In vortex-bridges repo
 bun test tests/gate-tests.ts
 python tests/python-gate-tests.py
 ```
 
-Expected: All 22 tests pass with identical coherence scores.
+All 22 tests should pass with identical coherence scores across both implementations.
 
 ---
 
@@ -353,14 +259,11 @@ Expected: All 22 tests pass with identical coherence scores.
 
 ### Override Coherence Gate
 
-**When to use:** Critical hotfix required, coherence temporarily unachievable.
+**When to Use:** Apply this escape hatch when critical hotfixes require immediate deployment. Use only when coherence is temporarily unachievable due to urgent circumstances.
 
-**Process:**
-1. Add label `coherence-override` to PR
-2. Document justification in PR description
-3. Plan remediation for next release
+**Process:** Add the label "coherence-override" to your pull request. Document complete justification in the PR description. Plan specific remediation for the next release cycle.
 
-**Example:**
+**Example Justification:**
 ```markdown
 ## Coherence Override Justification
 
@@ -368,20 +271,17 @@ Security vulnerability CVE-2024-XXXXX requires immediate patch.
 Coherence will be restored in follow-up documentation PR #123.
 ```
 
+This provides transparency about why standard gates were bypassed.
+
 ---
 
 ### Emergency Merge
 
-**When to use:** Production outage, standard gates blocking resolution.
+**When to Use:** Apply during production outages when standard gates block critical resolution. Reserve for genuine emergencies only.
 
-**Process:**
-1. Add label `emergency-merge` to PR
-2. Notify team via designated channel
-3. Create post-incident report
+**Process:** Add the label "emergency-merge" to your pull request. Notify your team immediately through designated emergency channels. Create a detailed post-incident report after resolution.
 
-**Post-Merge:**
-- Document in ATOM trail with `EMERGENCY` marker
-- Schedule coherence restoration within 48 hours
+**Post-Merge Actions:** Document the emergency merge in the ATOM trail using an EMERGENCY marker. Schedule coherence restoration work within 48 hours. Track remediation progress explicitly.
 
 ---
 
@@ -389,18 +289,11 @@ Coherence will be restored in follow-up documentation PR #123.
 
 ### Debug Information to Collect
 
-When reporting issues:
-1. Full workflow logs (vortex-sync run)
-2. Coherence analysis output (curl, divergence, potential, entropy)
-3. ATOM trail excerpt (last 5 entries)
-4. Bridge integration code snippet
-5. Repository configuration (workflow file version)
+When reporting issues, gather these essential diagnostics. Include full workflow logs from vortex-sync runs. Provide coherence analysis output showing curl, divergence, potential, and entropy metrics. Extract the last five entries from your ATOM trail. Share relevant bridge integration code snippets. Document your repository configuration including workflow file version.
 
 ### Support Channels
 
-- GitHub Issues: [vortex-bridges](https://github.com/toolate28/vortex-bridges/issues)
-- Documentation: [VORTEX-COLLAPSE-MAP.md](../VORTEX-COLLAPSE-MAP.md)
-- Discord: See [DISCORD-QUICKSTART.md](../community/DISCORD-QUICKSTART.md)
+Access support through multiple channels. Open GitHub issues at the vortex-bridges repository. Consult the VORTEX-COLLAPSE-MAP documentation for deployment guidance. Join the Discord community following DISCORD-QUICKSTART instructions.
 
 ---
 
