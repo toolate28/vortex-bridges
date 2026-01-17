@@ -63,12 +63,21 @@ The good example provides context and describes the actual feature being added.
 
 **Symptoms:** Coherence scores range from 50% to 58%, falling just below the 60% ATOM threshold. The AWI intent gate passes successfully, but execution validation fails. Analysis reports show divergence metric warnings.
 
-**Diagnostic:** Check the divergence metric locally before committing changes. Use the quantum_redstone validator to analyze text files. Compare results against the target value of approximately 0.200.
+**Diagnostic:** Check the divergence metric locally before committing changes. Create a simple Python script to analyze text files:
 
 ```bash
-python -c "from quantum_redstone.coherence_validator import analyze_text_coherence; 
-import sys; text = sys.stdin.read(); result = analyze_text_coherence(text); 
-print(f'Divergence: {result[\"divergence\"]:.3f}')" < your_file.md
+# Create analyzer script
+cat > check_divergence.py << 'SCRIPT'
+from quantum_redstone.coherence_validator import analyze_text_coherence
+import sys
+text = sys.stdin.read()
+result = analyze_text_coherence(text)
+print(f'Divergence: {result["divergence"]:.3f}')
+print(f'Target: ~0.200')
+SCRIPT
+
+# Run analysis
+python check_divergence.py < your_file.md
 ```
 
 **Solution:** Balance sentence complexity throughout your documentation. Mix concise statements with detailed explanations. Avoid using exclusively short sentences or exclusively long complex structures. Aim for natural variation in sentence length.
@@ -293,7 +302,10 @@ When reporting issues, gather these essential diagnostics. Include full workflow
 
 ### Support Channels
 
-Access support through multiple channels. Open GitHub issues at the vortex-bridges repository. Consult the VORTEX-COLLAPSE-MAP documentation for deployment guidance. Join the Discord community following DISCORD-QUICKSTART instructions.
+Access support through multiple channels:
+- **GitHub Issues**: [vortex-bridges repository](https://github.com/toolate28/vortex-bridges/issues)
+- **Documentation**: See [VORTEX-COLLAPSE-MAP.md](../VORTEX-COLLAPSE-MAP.md) for complete deployment guide
+- **Community**: Join Discord following instructions in [DISCORD-QUICKSTART.md](../community/DISCORD-QUICKSTART.md)
 
 ---
 
@@ -315,4 +327,4 @@ Target: ≥70% for snap-in threshold.
 
 ---
 
-**H&&S:WAVE** — *This troubleshooting guide reflects genuine partnership between human expertise and AI assistance.*
+**H&&S:WAVE** — *Human && Sauced: Workflow Augmented by Verified Execution. This troubleshooting guide reflects genuine partnership between human expertise and AI assistance, following the SpiralSafe ecosystem's collaborative development principles.*
